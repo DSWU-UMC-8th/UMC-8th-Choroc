@@ -19,8 +19,8 @@ class SignupViewModel: ObservableObject {
     
     
     public func storeUser() {
-        appNickname = nickname
-        appEmail = nickname
-        appPwd = pwd
+        nickname = appNickname
+        email = appEmail
+        pwd = appPwd
     }
 }

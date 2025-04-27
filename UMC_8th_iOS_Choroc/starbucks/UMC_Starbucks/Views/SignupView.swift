@@ -30,6 +30,7 @@ struct SignupView: View {
             TextField("닉네임", text: $viewModel.appNickname)
                 .font(.mainTextRegular18)
                 .foregroundStyle(Color("gray00"))
+                .autocorrectionDisabled(true)
                 .textInputAutocapitalization(.never)
             Divider()
             
@@ -38,6 +39,7 @@ struct SignupView: View {
             TextField("이메일", text: $viewModel.appEmail)
                 .font(.mainTextRegular18)
                 .foregroundStyle(Color("gray00"))
+                .autocorrectionDisabled(true)
                 .textInputAutocapitalization(.never)
             Divider()
             
@@ -46,6 +48,7 @@ struct SignupView: View {
             SecureField("비밀번호", text: $viewModel.appPwd)
                 .font(.mainTextRegular18)
                 .foregroundStyle(Color("gray00"))
+                .autocorrectionDisabled(true)
                 .textInputAutocapitalization(.never)
             Divider()
             
@@ -54,9 +57,9 @@ struct SignupView: View {
             Button(action: {
                 if viewModel.appNickname.count < 1 || viewModel.appEmail.count < 1 || viewModel.appPwd.count < 1 {
                     errorMessage = "한 글자 이상 입력하세요."
-                    print(errorMessage)
                 } else {
                     viewModel.storeUser()
+                    
                     dismiss()
                 }
                 

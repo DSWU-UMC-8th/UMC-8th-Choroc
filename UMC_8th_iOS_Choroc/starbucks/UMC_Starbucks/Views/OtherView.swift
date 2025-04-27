@@ -9,7 +9,9 @@ import SwiftUI
 
 struct OtherView:View{
     @StateObject private var viewModel = OtherViewModel()
+    @AppStorage("isLoggedIn") var isLoggedIn = false
     @AppStorage("appNickname") private var nickname: String = "(작성한 닉네임)"
+
     
     var body: some View{
         ZStack(alignment: .top){
@@ -24,6 +26,7 @@ struct OtherView:View{
                 Spacer().frame(height:49)
                 payButtonGroup
                 supportButtonGroup
+                
             }
         }
     }
@@ -35,11 +38,13 @@ struct OtherView:View{
             Spacer().frame(width: 298)
             
             Button(action: {
-                print("로그아웃!")
+                print("로그아웃 버튼 클릭됨")
+                isLoggedIn = false
+                print("로그인 상태: \(isLoggedIn)")
             }) {
                 Image(.logout)
                     .resizable()
-                    .frame(width:35, height: 35)
+                    .frame(width: 35, height: 35)
             }
                 
         }
@@ -50,7 +55,7 @@ struct OtherView:View{
     //상단 고객 관련 정보 - 환영
     private var customerInfoGroup: some View {
         VStack {
-            Text("\(nickname)님")
+            Text(nickname+"님")
                 .font(.mainTextSemibold24)
                 .foregroundStyle(Color("primaryColor"))
             Text("환영합니다 🙌")

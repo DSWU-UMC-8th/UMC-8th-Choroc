@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject var viewModel: LoginViewModel = .init()
     @FocusState var focusField: Field?
+    
+    
+    @AppStorage("isLoggedIn") var isLoggedIn = false
+    @AppStorage("appEmail") private var savedId: String = ""
+    @AppStorage("appPwd") private var savedPwd: String = ""
+    
+    @State private var id: String = ""
+    @State private var pwd: String = ""
 
     enum Field: Hashable {
       case id
@@ -17,7 +24,7 @@ struct LoginView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationStack{
             VStack {
                 Spacer().frame(height: 104)
                 
@@ -34,6 +41,7 @@ struct LoginView: View {
             }
             .frame(width: 402, height:751)
         }
+        
     }
     
     ///상단 로고 및 설명 그룹
@@ -69,9 +77,12 @@ struct LoginView: View {
                 .foregroundStyle(Color("subBlack"))
     
                 
-            TextField("", text: $viewModel.id)
+            TextField("", text: $id)
                 .frame(width: 401)
                 .focused($focusField, equals: .id)
+                .autocorrectionDisabled(true)
+                .textInputAutocapitalization(.never)
+                
             
             Divider()
                 .background(focusField == .id ? Color("primaryColor") : Color("lineGray"))
@@ -83,9 +94,11 @@ struct LoginView: View {
                 .foregroundStyle(Color("subBlack"))
                 
             
-            SecureField("", text: $viewModel.pwd)
+            SecureField("", text: $pwd)
                 .frame(width: 401)
                 .focused($focusField, equals: .pwd)
+                .autocorrectionDisabled(true)
+                .textInputAutocapitalization(.never)
             
             Divider()
                 .background(focusField == .pwd ? Color("primaryColor") : Color("lineGray"))
@@ -93,17 +106,31 @@ struct LoginView: View {
             Spacer().frame(height: 47)
             
             Button(action: {
-                print("로그인 시도!")
+                print("입력한 id: \(id), 입력한 pwd: \(pwd)")
+                print("저장된 id: \(savedId), 저장된 pwd: \(savedPwd)")
+                print("로그인 시도 전 isLoggedIn: \(isLoggedIn)")
+
+                if id == savedId && pwd == savedPwd {
+                    isLoggedIn = true
+                    print("✅ 로그인 성공")
+                } else {
+                    isLoggedIn = false
+                    print("❌ 로그인 실패")
+                }
+                
+                print("로그인 시도 후 isLoggedIn: \(isLoggedIn)")
             }) {
                 Text("로그인하기")
-                    .padding()
-                    .frame(maxWidth: .infinity, minHeight: 46)
-                    .font(.mainTextMedium16)
-                    .background(Color("primaryColor"))
-                    .foregroundStyle(.white)
-                    .cornerRadius(20)
-            }
-            .frame(maxWidth: .infinity)
+
+                        .padding()
+                        .frame(maxWidth: .infinity, minHeight: 46)
+                        .font(.mainTextMedium16)
+                        .background(Color("primaryColor"))
+                        .foregroundStyle(.white)
+                        .cornerRadius(20)
+                }
+                .frame(maxWidth: .infinity)
+               
             
         }
     }
@@ -128,5 +155,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel())
+    LoginView()
 }
