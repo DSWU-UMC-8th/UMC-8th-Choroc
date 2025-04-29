@@ -11,44 +11,61 @@ struct OtherView:View{
     @StateObject private var viewModel = OtherViewModel()
     @AppStorage("isLoggedIn") var isLoggedIn = false
     @AppStorage("appNickname") private var nickname: String = "(작성한 닉네임)"
+    
+    @Environment(\.modelContext) private var modelContext
+    @State private var path = NavigationPath()
+
 
     
     var body: some View{
-        ZStack(alignment: .top){
-            Color("background")
-                .ignoresSafeArea()
-            
-            VStack{
-                topBackGroup
-                Spacer().frame(height:49)
-                customerInfoGroup
-                buttonGroup
-                Spacer().frame(height:49)
-                payButtonGroup
-                supportButtonGroup
-                
+        NavigationStack(path: $path){
+            ZStack(alignment: .top){
+                    ScrollView{
+                        VStack{
+                            topBackGroup
+                            Spacer().frame(height:49)
+                            customerInfoGroup
+                            buttonGroup
+                            Spacer().frame(height:49)
+                            payButtonGroup
+                            supportButtonGroup
+                            Spacer().frame(height:100)
+                            
+                        }
+                    }
+                    .background(Color("background"))
+                    .ignoresSafeArea()
+                }
+            .navigationDestination(for: String.self) { destination in
+                if destination == "receipt" {
+                    ReceiptView(modelContext: modelContext)
+                }
             }
         }
+        
     }
     
     private var topBackGroup: some View {
-        HStack {
-            Text("Other")
-                .font(.mainTextBold24)
-            Spacer().frame(width: 298)
-            
-            Button(action: {
-                print("로그아웃 버튼 클릭됨")
-                isLoggedIn = false
-                print("로그인 상태: \(isLoggedIn)")
-            }) {
-                Image(.logout)
-                    .resizable()
-                    .frame(width: 35, height: 35)
-            }
+        VStack{
+            Spacer().frame(height:40)
+            HStack {
+                Text("Other")
+                    .font(.mainTextBold24)
+                Spacer().frame(width: 298)
                 
+                Button(action: {
+                    print("로그아웃 버튼 클릭됨")
+                    isLoggedIn = false
+                    print("로그인 상태: \(isLoggedIn)")
+                }) {
+                    Image(.logout)
+                        .resizable()
+                        .frame(width: 35, height: 35)
+                }
+                    
+            }
         }
-        .frame(maxWidth: .infinity, minHeight: 80)
+        .frame(maxWidth: .infinity, minHeight: 100)
         .background(.white)
     }
     
@@ -68,12 +85,18 @@ struct OtherView:View{
     }
     
     //상단 고객 관련 정보 - 버튼 그룹
-    private var buttonGroup: some View{
-        
-        HStack(spacing: 10.5){
-            
-            ForEach(viewModel.otherUserModel, id: \.name){ model in
-                ButtonView(otherUserModel: model)
+    private var buttonGroup: some View {
+        HStack(spacing: 10.5) {
+            ForEach(viewModel.otherUserModel, id: \.name) { model in
+                Button(action: {
+                    if model.name == "전자영수증" {
+                        path.append("receipt")
+                    } else {
+                        print("\(model.name)")
+                    }
+                }) {
+                    ButtonView(otherUserModel: model)
+                }
             }
         }
     }
@@ -136,20 +159,15 @@ struct ButtonView: View {
     }
      
     var body: some View {
-        Button(action: {
-            print("\(otherUserModel.name)") // otherUserModel의 name 필드 값 가져올거임
-        }) {
-            VStack() {
-                otherUserModel.image // otherUserModel의 image 필드 값 가져올거임
-                    .resizable()
-                    .frame(width: 48, height: 48)
-                Text(otherUserModel.name)
-                    .font(.mainTextSemibold16)
-                    .foregroundColor(Color("mainBlack"))
-            }
-            .frame(width: 102, height: 108)
-
+        VStack {
+            otherUserModel.image
+                .resizable()
+                .frame(width: 48, height: 48)
+            Text(otherUserModel.name)
+                .font(.mainTextSemibold16)
+                .foregroundColor(Color("mainBlack"))
         }
+        .frame(width: 102, height: 108)
         .background(.white)
         .cornerRadius(15)
         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 0)

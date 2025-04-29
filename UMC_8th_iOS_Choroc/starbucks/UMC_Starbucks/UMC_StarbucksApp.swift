@@ -15,9 +15,10 @@ struct UMC_StarbucksApp: App {
         WindowGroup {
             if isLoggedIn {
                 TabBarView()
-            } else {
+            }else {
                 LoginView()
             }
         }
+        .modelContainer(for: ReceiptModel.self)
     }
 }
