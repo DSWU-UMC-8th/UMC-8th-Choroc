@@ -8,6 +8,7 @@
 import SwiftUI
 
 class OtherViewModel: ObservableObject{
+    
     let otherUserModel: [OtherModel] = [
         .init(name: "별 히스토리", image: .init(.starHistory)),
         .init(name: "전자영수증", image: .init(.receipt)),

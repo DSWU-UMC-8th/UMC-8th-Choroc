@@ -69,6 +69,10 @@ extension Font {
         return .pretend(type: .semibold, size: 24)
     }
     
+    static var mainTextSemibold14: Font {
+        return .pretend(type: .semibold, size: 14)
+    }
+    
     static var mainTextSemibold16: Font {
         return .pretend(type: .semibold, size: 16)
     }
@@ -76,9 +80,16 @@ extension Font {
     static var mainTextSemibold18: Font {
         return .pretend(type: .semibold, size: 18)
     }
+    
     static var mainTextBold24: Font {
         return .pretend(type: .bold, size: 24)
     }
+    
+    static var mainTextSemiBold38: Font {
+        return .pretend(type: .semibold, size: 38)
+    }
+    
+    
     
     
 }

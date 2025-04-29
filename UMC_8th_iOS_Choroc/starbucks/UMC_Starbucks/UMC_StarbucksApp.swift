@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct UMC_StarbucksApp: App {
+    @AppStorage("isLoggedIn") var isLoggedIn = false
+
     var body: some Scene {
         WindowGroup {
-            SplashView()
+            if isLoggedIn {
+                TabBarView()
+            } else {
+                LoginView()
+            }
         }
     }
 }
