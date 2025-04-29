@@ -13,6 +13,7 @@ struct HomeView: View {
     @AppStorage("appNickname") private var optionalNickname: String?
     @State private var path = NavigationPath()
     let rewardRange: Int = 12
+    @Binding var showPopup: Bool
     
     var body: some View{
         NavigationStack(path: $path) {
@@ -49,6 +50,9 @@ struct HomeView: View {
             }
             .ignoresSafeArea()
             .scrollIndicators(.hidden)
+            .onAppear {
+                showPopup = true
+            }
             
             .navigationDestination(for: CoffeeModel.self) { coffee in
                 CoffeeDetailView(coffeeDetail: coffee)
@@ -277,5 +281,5 @@ struct HomeView: View {
 
 
 #Preview {
-    HomeView()
+    HomeView(showPopup: .constant(false))
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct PopUpView: View {
     @Environment(\.dismiss) var dismiss
+    @Binding var isPopupClosed: Bool
     
     var body: some View{
         
@@ -46,6 +47,7 @@ struct PopUpView: View {
             Spacer().frame(height:19)
             
             Button(action:{
+                isPopupClosed = false
                 dismiss()
             }){
                 Text("X 닫기")
@@ -60,5 +62,5 @@ struct PopUpView: View {
 }
 
 #Preview {
-    PopUpView()
+    PopUpView(isPopupClosed: .constant(false))
 }
