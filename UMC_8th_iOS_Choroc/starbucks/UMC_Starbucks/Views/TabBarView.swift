@@ -8,15 +8,18 @@ import SwiftUI
 
 
 struct TabBarView: View {
+    @State private var showPopup = false
     
     var body: some View {
         TabView {
             Tab("Home", image: "home"){
-                HomeView()
+                HomeView(showPopup: $showPopup)
             }
             Tab("Pay", image: "pay"){}
             Tab("Order", image: "order"){}
-            Tab("Shop", image: "shop"){}
+            Tab("Shop", image: "shop"){
+                ShopView()
+            }
             Tab("Other", image: "other"){
                 OtherView()
             }
@@ -24,6 +27,10 @@ struct TabBarView: View {
         .tint(Color("primaryColor"))
         .onAppear {
             UITabBar.appearance().backgroundColor = .white
+            
+        }
+        .fullScreenCover(isPresented: $showPopup) {
+            PopUpView(isPopupClosed: $showPopup)
         }
     }
 }
